@@ -1,8 +1,9 @@
 import { useState } from "react";
 import Image from "next/image";
+import { useSession, signIn, signOut } from "next-auth/react"
 
 export default function Navbar() {
-
+    const { data, status } = useSession()
     const [isMenuOpen, setIsMenuOpen] = useState(false);
   
     return (
@@ -48,21 +49,37 @@ export default function Navbar() {
             </span>
           </a>
           <ul className="flex items-center hidden ml-auto space-x-8 lg:flex">
-            <li>
+{/*            <li>
               <a
                 href="/"
                 className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-teal-accent-400"
               >
                 Login
               </a>
-            </li>
+    </li>*/}
             <li>
+            {status == "authenticated"? (
+              <>
+              <button onClick={() => signOut()}>
               <a
                 href="/"
                 className="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-teal-accent-400 hover:bg-teal-accent-700 focus:shadow-outline focus:outline-none"
               >
-                Sign up
+                Logout 
               </a>
+              </button>
+              </>
+            ):(
+              <button onClick={() => signIn()}>
+              <a
+                href="/"
+                className="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-teal-accent-400 hover:bg-teal-accent-700 focus:shadow-outline focus:outline-none"
+              >
+                Sign in
+              </a>
+              </button>
+            )
+            }
             </li>
           </ul>
           <div className="ml-auto lg:hidden">
@@ -144,21 +161,23 @@ export default function Navbar() {
                           About
                         </a>
                       </li>
-                      <li>
+{/*                   <li>
                         <a
                           href="/"
                           className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-teal-accent-400"
                         >
                           Login
                         </a>
-                      </li>
+            </li>*/}
                       <li>
+                        <button onClick={() => signIn()}>
                         <a
                           href="/"
                           className="inline-flex items-center justify-center w-full h-12 px-6 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-teal-accent-400 hover:bg-teal-accent-700 focus:shadow-outline focus:outline-none"
                         >
-                          Sign up
+                          Sign in
                         </a>
+                        </button>
                       </li>
                     </ul>
                   </nav>
