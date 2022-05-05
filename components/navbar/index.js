@@ -5,6 +5,18 @@ import { useSession, signIn, signOut } from "next-auth/react"
 export default function Navbar() {
     const { data, status } = useSession()
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const handleSignIn = async () => {
+      await signIn( {
+        callbackUrl: 'http://localhost:3000/about',
+      })
+    }
+  
+    const handleLogout = async () => {
+      await signOut({
+        callbackUrl: 'http://localhost:3000/',
+      })
+    }
   
     return (
       <div className="px-4 py-5 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8">
@@ -60,7 +72,7 @@ export default function Navbar() {
             <li>
             {status == "authenticated"? (
               <>
-              <button onClick={() => signOut()}>
+              <button onClick={handleLogout}>
               <a
                 href="/"
                 className="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-teal-accent-400 hover:bg-teal-accent-700 focus:shadow-outline focus:outline-none"
@@ -68,9 +80,19 @@ export default function Navbar() {
                 Logout 
               </a>
               </button>
+              {data.user?.image && data.user.name ? (
+                  <img
+                    className="inline-flex items-center justify-center ml-5"
+                    src={data.user.image}
+                    alt={data.user.name}
+                    width={50}
+                    height={50}
+                    style={{ borderRadius: '50%' }}
+                  />
+                ) : null}
               </>
             ):(
-              <button onClick={() => signIn()}>
+              <button onClick={handleSignIn}>
               <a
                 href="/"
                 className="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-teal-accent-400 hover:bg-teal-accent-700 focus:shadow-outline focus:outline-none"
